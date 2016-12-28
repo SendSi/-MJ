@@ -1,0 +1,57 @@
+//
+//  PrefixHeader.pch
+//  anchorPoint学习滑动
+//
+//  Created by SunSi on 16/11/12.
+//  Copyright © 2016年 SunSi. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import "ProjectConfig.h"
+#import <Foundation/Foundation.h>
+#import "ProjectAddress.h"
+#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
+#import "LHUtils.h"
+#import "MJRefresh.h"
+#import "BlocksKit+UIKit.h"
+#import "HJProtocol.h"
+#import "MJExtension.h"
+
+#define pchBlackColor     [UIColor blackColor]      // 0.0 white
+#define pchDarkGrayColor  [UIColor darkGrayColor]   // 0.333 white
+#define pchLightGrayColor [UIColor lightGrayColor]  // 0.667 white
+#define pchWhiteColor     [UIColor whiteColor]      // 1.0 white
+#define pchGrayColor      [UIColor grayColor]       // 0.5 white
+#define pchRedColor       [UIColor redColor]        // 1.0, 0.0, 0.0 RGB
+#define pchGreenColor     [UIColor greenColor]      // 0.0, 1.0, 0.0 RGB
+#define pchBlueColor      [UIColor blueColor]       // 0.0, 0.0, 1.0 RGB
+#define pchCyanColor      [UIColor cyanColor]       // 0.0, 1.0, 1.0 RGB
+#define pchYellwColor     [UIColor yellowColor]     // 1.0, 1.0, 0.0 RGB
+#define pchMagentaColor   [UIColor magentaColor]    // 1.0, 0.0, 1.0 RGB
+#define pchOrangeColor    [UIColor orangeColor]     // 1.0, 0.5, 0.0 RGB
+#define pchPurpleColor    [UIColor purpleColor]     // 0.5, 0.0, 0.5 RGB
+#define pchBrownColor     [UIColor brownColor]      // 0.6, 0.4, 0.2 RGB
+#define pchClearColor     [UIColor clearColor]      // 0.0 white, 0.0 alpha
+#define pchColor222 configColor(222,222,222)//灰色
+#define pchColor242 configColor(242,242,242)//灰色
+#define pchColorMainNav configColor(35,85,100)//
+#define pchColorAroundNav configColor(235,40,48)//
+#define pchLightColor50 configColor_alpha(170,170,170,0.5)//灰色
+#define pchLightWhiteLineColor configColor(139,172,178)//灰白色
+#define pchSmallTitleColor  configColor(206,66,97)
+#define pchWhiteBackgroundBlueTitleColor  configColor(44,106,117)
+#define pchWhiteBackground_light171  configColor(171,171,171)
+#pragma mark - font 字体区
+//导航栏标题字体大小
+#define pchAppNavigationFont [UIFont systemFontOfSize:17]
+#define pchFontBigSize [UIFont systemFontOfSize:16]
+#define pchFontNormalSize [UIFont systemFontOfSize:14]
+#define pchFontSmallSize [UIFont systemFontOfSize:12]
+
+#endif /* PrefixHeader_pch */
+#endif /* PrefixHeader_pch */
