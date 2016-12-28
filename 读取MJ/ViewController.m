@@ -62,6 +62,9 @@
          [RGUtilObject.instance save];
 }
 
+- (IBAction)sinaLogin:(UIButton *)sender {
+}
+
 
 
 

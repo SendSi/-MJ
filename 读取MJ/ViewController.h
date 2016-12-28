@@ -11,9 +11,9 @@
 @interface ViewController : UIViewController
 
 - (IBAction)clickRead:(UIButton *)sender;
-
 - (IBAction)clickWrite:(UIButton *)sender;
-
 - (IBAction)clickImport:(UIButton *)sender;
+- (IBAction)sinaLogin:(UIButton *)sender;
+
 @end
 

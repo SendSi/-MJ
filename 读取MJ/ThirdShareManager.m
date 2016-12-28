@@ -8,6 +8,7 @@
 
 #import "ThirdShareManager.h"
 #import "AFNetworking.h"
+#import "HJBaseAPI.h"
 // SDK APPID
 static NSString* const WX_APPID  = @"wx0f8b2fa15745bcc1";
 
@@ -89,28 +90,26 @@ static NSString* const WX_APPID  = @"wx0f8b2fa15745bcc1";
         /**  1.先获取 accessToken,openid   2.再获取用户信息  */
         
         NSString *accessUrlStr = [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code",  WX_APPID, @"370a177e935643135728415edec63cdb", temp.code];
-        [self httpManager:accessUrlStr success:^(NSDictionary *obj) {
+        
+        
+        HJNetworkClient *client= [[HJNetworkClient alloc] init];
+        [client.manager GET:accessUrlStr parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary   *obj) {
             
             NSString *infoUserStr= [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/userinfo?access_token=%@&openid=%@",obj[@"access_token"],obj[@"openid"]];
-            [self httpManager:infoUserStr success:^(NSDictionary  *dicInfo) {
+            
+            [client.manager GET:infoUserStr parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary *dicInfo) {
                 NSDictionary *new_dic=@{
                                         @"openid":obj[@"openid"],
                                         @"nickName":dicInfo[@"nickname"],
                                         @"headimg":dicInfo[@"headimgurl"]
                                         };
                 self.blockWXSuccess(new_dic);
-                
-            } fail:^(id obj) {
-                 self.blockWXFail(@"获取个人信息中~~错误");
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                self.blockWXFail(@"获取个人信息中~~错误");
             }];
-            
-        } fail:^(id obj) {
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             self.blockWXFail(@"获取accessToken~~错误");
         }];
-        
-
-
-        
     }
 }
 
@@ -131,12 +130,7 @@ static NSString* const WX_APPID  = @"wx0f8b2fa15745bcc1";
 }
 
 
-//- (nullable NSURLSessionDataTask *)GET:(NSString *)URLString
-//                            parameters:(nullable id)parameters
-//                              progress:(nullable void (^)(NSProgress *downloadProgress))downloadProgress
-//                               success:(nullable void (^)(NSURLSessionDataTask *task, id _Nullable responseObject))success
-//                               failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure;
 
-    
-    @end
+
+@end
 
