@@ -6,11 +6,12 @@
 //  Copyright © 2016年 SunSi. All rights reserved.
 //
 
+
+
 #import "ThirdShareManager.h"
 #import "AFNetworking.h"
 #import "HJBaseAPI.h"
-// SDK APPID
-static NSString* const WX_APPID  = @"wx0f8b2fa15745bcc1";
+#import "WeiboSDK.h"
 
 @interface ThirdShareManager()
 
@@ -19,6 +20,8 @@ static NSString* const WX_APPID  = @"wx0f8b2fa15745bcc1";
 
 
 @implementation ThirdShareManager
+
+/**  单例  */
 +(instancetype)Instance{
     static ThirdShareManager *_instance=nil;
     static dispatch_once_t onceToken;
@@ -39,7 +42,7 @@ static NSString* const WX_APPID  = @"wx0f8b2fa15745bcc1";
     [self.oauth authorize:getInfoArr inSafari:NO];
 }
 
-#pragma mark - 必传 的代理
+// QQ必传 的代理
 -(void)tencentDidLogin{
     [self.oauth getUserInfo];
     NSLog(@"登录成功");
@@ -114,7 +117,6 @@ static NSString* const WX_APPID  = @"wx0f8b2fa15745bcc1";
 }
 
 -(void)httpManager:(NSString *)url success:(idBlock)blockSuccess fail:(idBlock)blockFail{
-    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -131,6 +133,87 @@ static NSString* const WX_APPID  = @"wx0f8b2fa15745bcc1";
 
 
 
+#pragma mark - sina
+-(void)sinaLogin_success:(idBlock)success fail:(idBlock)fail{
+    self.blockSinaFail=fail;
+    self.blockSinaSuccess=success;
+    //高级信息里的授权回调页：http://led.linkfun.cc
+    WBAuthorizeRequest *request=[WBAuthorizeRequest request];
+    request.redirectURI=@"http://led.linkfun.cc";//开发者后台:高级信息里的授权回调页：http://led.linkfun.cc
+    request.scope=@"all";
+    request.userInfo=nil;
+    [WeiboSDK sendRequest:request];
+}
+-(void)didReceiveWeiboRequest:(WBBaseRequest *)request{
+    
+}
+-(void)didReceiveWeiboResponse:(WBBaseResponse *)response{
+    if([response isKindOfClass:[WBAuthorizeRequest class]]){
+        if(response.statusCode==WeiboSDKResponseStatusCodeSuccess){
+            WBAuthorizeResponse *auth=(WBAuthorizeResponse *)response;
+            NSString *oathStringUrl=[NSString stringWithFormat:@"https://api.weibo.com/2/users/show.json?uid=%@&access_token=%@",auth.userID,auth.accessToken];
+            HJNetworkClient *client= [[HJNetworkClient alloc] init];
+            [client.manager GET:oathStringUrl parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+                
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSDictionary *info_new=@{@"openid":responseObject[@"idstr"],
+                                         @"nickname":responseObject[@"name"],
+                                         @"headimg":responseObject[@"avatar_hd"],
+                                         @"province":responseObject[@"province"],
+                                         @"city":responseObject[@"city"],
+                                         @"sex":[responseObject[@"gender"] isEqualToString:@"m"]?@0:@1
+                                         };
+                self.blockSinaSuccess(info_new);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                self.blockSinaFail(error);
+            }];
+        }
+        else{
+            self.blockSinaFail([NSString stringWithFormat:@"%ld", response.statusCode]);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @end
+
+
+
+
+
+
+
+
+
+
+
 

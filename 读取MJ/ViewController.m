@@ -63,6 +63,11 @@
 }
 
 - (IBAction)sinaLogin:(UIButton *)sender {
+    [ThirdShareManager.Instance sinaLogin_success:^(NSDictionary *getUserDic) {
+        NSLogs(@"user===%@,head===%@,dicAll===%@",getUserDic[@"nickname"],getUserDic[@"headimg"],getUserDic);
+    } fail:^(NSString *obj) {
+        NSLogs(@"objErr==%@",obj);
+    }];
 }
 
 
@@ -76,7 +81,7 @@
 - (IBAction)login_QQ:(id)sender {
     
     [ThirdShareManager.Instance qqLogin_success:^(NSDictionary *obj) {
-        NSLog(@"dic==%@",obj);
+        NSLogs(@"dic==%@",obj);
         
     } fail:^(NSString *failInfo) {
         

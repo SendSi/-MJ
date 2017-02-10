@@ -33,7 +33,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    //微信要先在didFinish先注册,在分类中
+    //启动时,微信要先注册,要先在didFinish
    [self third_application:application didFinishLaunchingWithOptions:launchOptions];
     return YES;
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,28 +20,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ttT-1a-rQa">
-                                <rect key="frame" x="31" y="20" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ttT-1a-rQa">
+                                <rect key="frame" x="20" y="70" width="80" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="FnX-gR-A7v"/>
+                                    <constraint firstAttribute="width" constant="80" id="bLA-cX-oQQ"/>
+                                </constraints>
                                 <state key="normal" title="写入"/>
                                 <connections>
                                     <action selector="clickWrite:" destination="BYZ-38-t0r" eventType="touchUpInside" id="v6Q-Oi-4MO"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WQB-Ym-9Rh">
-                                <rect key="frame" x="31" y="58" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WQB-Ym-9Rh">
+                                <rect key="frame" x="120" y="70" width="80" height="30"/>
                                 <state key="normal" title="读取"/>
                                 <connections>
                                     <action selector="clickRead:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fDn-du-kYD"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URP-SO-sgC">
-                                <rect key="frame" x="31" y="96" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="保存"/>
-                                <connections>
-                                    <action selector="clickImport:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bDb-8Z-CuD"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vNy-5m-eoQ">
@@ -68,8 +62,27 @@
                                     <action selector="sinaLogin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="D5e-WG-NSo"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URP-SO-sgC">
+                                <rect key="frame" x="220" y="70" width="80" height="30"/>
+                                <state key="normal" title="保存"/>
+                                <connections>
+                                    <action selector="clickImport:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bDb-8Z-CuD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="URP-SO-sgC" firstAttribute="width" secondItem="ttT-1a-rQa" secondAttribute="width" id="6zi-lH-O1o"/>
+                            <constraint firstItem="URP-SO-sgC" firstAttribute="leading" secondItem="WQB-Ym-9Rh" secondAttribute="trailing" constant="20" id="AQF-rx-cIr"/>
+                            <constraint firstItem="ttT-1a-rQa" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="J2x-PV-NiW"/>
+                            <constraint firstItem="WQB-Ym-9Rh" firstAttribute="width" secondItem="ttT-1a-rQa" secondAttribute="width" id="W86-yE-7yp"/>
+                            <constraint firstItem="WQB-Ym-9Rh" firstAttribute="leading" secondItem="ttT-1a-rQa" secondAttribute="trailing" constant="20" id="atN-NS-1r3"/>
+                            <constraint firstItem="WQB-Ym-9Rh" firstAttribute="bottom" secondItem="ttT-1a-rQa" secondAttribute="bottom" id="ncE-rU-3lY"/>
+                            <constraint firstItem="URP-SO-sgC" firstAttribute="bottom" secondItem="ttT-1a-rQa" secondAttribute="bottom" id="pDQ-uP-Z4p"/>
+                            <constraint firstItem="ttT-1a-rQa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="qqb-cH-rvM"/>
+                            <constraint firstItem="URP-SO-sgC" firstAttribute="top" secondItem="ttT-1a-rQa" secondAttribute="top" id="qxx-Ar-35T"/>
+                            <constraint firstItem="WQB-Ym-9Rh" firstAttribute="top" secondItem="ttT-1a-rQa" secondAttribute="top" id="tWT-7n-CsW"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

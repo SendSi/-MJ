@@ -13,7 +13,12 @@
 
 @interface AppDelegate (Third)
 
+/**  第三方应用的URL  */
 -(BOOL) thrid_application_url:(NSURL *)url;
 
 - (void)third_application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
+
+
+
+
 @end

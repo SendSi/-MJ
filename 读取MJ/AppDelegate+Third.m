@@ -15,14 +15,22 @@
 -(BOOL) thrid_application_url:(NSURL *)url{
     return
     [TencentOAuth HandleOpenURL:url]//QQ登录
-    || [WXApi handleOpenURL:url delegate:ThirdShareManager.Instance];//微信登录
+    || [WXApi handleOpenURL:url delegate:ThirdShareManager.Instance]
+|| [WeiboSDK handleOpenURL:url delegate:ThirdShareManager.Instance];//微信登录
 }
 - (void)third_application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
-  BOOL isSucdessWX=  [WXApi registerApp:@"wx0f8b2fa15745bcc1"];
+  BOOL isSucdessWX=  [WXApi registerApp:WX_APPID];
     if(isSucdessWX){
         NSLogs(@"wx --成功");
     }else{
         NSLogs(@"wx --失败");
+    }
+    
+    BOOL wb=[WeiboSDK registerApp:WB_APPKEY];
+    if(wb){
+        NSLogs(@"wb---成功");
+    }else{
+        NSLogs(@"wb---失败");
     }
 }
 
