@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/QQApiInterface.h>
 #import "WXApi.h"//wechat
 #import "WeiboSDK.h"
 
@@ -43,12 +44,17 @@ static NSString* const WB_APPKEY = @"1098884526";
 @property (nonatomic, copy) idBlock blockSinaFail;
 
 
+#pragma mark - 分享
+#pragma mark - QQ share
+-(void)qqShareSessionWithSuccess:(idBlock )blockSuccess fail:(idBlock)blockFail;
+-(void)qqShardTimeLineWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail;
 
+/**  VC可以指定的 QQ空间  */
+-(void)qqshareZoneWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail shareTitle:(NSString *)shareTitle shareImage:(NSString *)shareImage sharePage:(NSString *)sharePage descText:(NSString *)descText;
 
-
-
-
-
+#pragma mark -wx share
+-(void)wxShareMessageWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail shareTitle:(NSString *)shareTitle shareImage:(NSString *)shareImage sharePage:(NSString *)sharePage descText:(NSString *)descText;
+-(void)wxShareFriendWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail shareTitle:(NSString *)shareTitle shareImage:(NSString *)shareImage sharePage:(NSString *)sharePage descText:(NSString *)descText;
 
 @end
 

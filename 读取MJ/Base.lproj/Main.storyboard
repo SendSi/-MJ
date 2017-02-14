@@ -69,6 +69,46 @@
                                     <action selector="clickImport:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bDb-8Z-CuD"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xYF-1H-bXl">
+                                <rect key="frame" x="164" y="170" width="69" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="QQShare"/>
+                                <connections>
+                                    <action selector="clickQQShare:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dhx-R5-Kx5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xc9-fk-YVC">
+                                <rect key="frame" x="164" y="208" width="126" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="QQZoneShare"/>
+                                <connections>
+                                    <action selector="ClickQQZoneShare:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ygN-GY-KGR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tR3-qq-TzO">
+                                <rect key="frame" x="175" y="246" width="142" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="页面指定QQZone"/>
+                                <connections>
+                                    <action selector="clickQQZoneVC:" destination="BYZ-38-t0r" eventType="touchUpInside" id="q67-mJ-RvK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9CY-WD-Sod">
+                                <rect key="frame" x="164" y="304" width="126" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="wxMessageShare"/>
+                                <connections>
+                                    <action selector="clickWxMsgShare:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2Vq-Eh-Qor"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JFk-SX-bAU">
+                                <rect key="frame" x="164" y="362" width="126" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="wxFriendShare"/>
+                                <connections>
+                                    <action selector="clickWXFriendShare:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HcM-V1-pAO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>

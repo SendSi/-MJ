@@ -70,6 +70,51 @@
     }];
 }
 
+- (IBAction)clickQQShare:(UIButton *)sender {
+    [ThirdShareManager.Instance qqShareSessionWithSuccess:^(id obj) {
+        
+    } fail:^(id obj) {
+        
+    }];
+//    NSDictionary *qq=@{@"image":@"icon_qq02",@"handler":^{
+//
+//    }
+//};
+}
+
+- (IBAction)ClickQQZoneShare:(UIButton *)sender {
+    [ThirdShareManager.Instance qqShardTimeLineWithSuccess:^(id obj) {
+        
+    } fail:^(id obj) {
+        
+    }];
+}
+
+- (IBAction)clickQQZoneVC:(UIButton *)sender {
+    [ThirdShareManager.Instance qqshareZoneWithSuccess:^(id obj) {
+        
+    } fail:^(id obj) {
+        
+    } shareTitle:@"小小曾测试" shareImage:@"http://news.youth.cn/gn/201702/W020170213297482155817.jpg" sharePage:@"https://www.baidu.com/" descText:@"百度一下"];
+}
+
+- (IBAction)clickWxMsgShare:(UIButton *)sender {
+    [ThirdShareManager.Instance wxShareMessageWithSuccess:^(id obj) {
+        
+    } fail:^(id obj) {
+        
+    } shareTitle:@"小小曾测试" shareImage:@"http://news.youth.cn/gn/201702/W020170213297482155817.jpg" sharePage:@"https://www.baidu.com/" descText:@"百度一下"];
+    
+}
+
+- (IBAction)clickWXFriendShare:(UIButton *)sender {
+    [ThirdShareManager.Instance wxShareFriendWithSuccess:^(id obj) {
+        
+    } fail:^(id obj) {
+        
+    } shareTitle:@"小小曾测试" shareImage:@"http://news.youth.cn/gn/201702/W020170213297482155817.jpg" sharePage:@"https://www.baidu.com/" descText:@"百度一下"];
+}
+
 
 
 

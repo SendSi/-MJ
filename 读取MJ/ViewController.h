@@ -15,5 +15,14 @@
 - (IBAction)clickImport:(UIButton *)sender;
 - (IBAction)sinaLogin:(UIButton *)sender;
 
+
+- (IBAction)clickQQShare:(UIButton *)sender;
+- (IBAction)ClickQQZoneShare:(UIButton *)sender;
+
+- (IBAction)clickQQZoneVC:(UIButton *)sender;
+
+- (IBAction)clickWxMsgShare:(UIButton *)sender;
+- (IBAction)clickWXFriendShare:(UIButton *)sender;
+
 @end
 

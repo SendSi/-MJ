@@ -175,16 +175,94 @@
 }
 
 
+static NSString* title = @"测试lnwy";
+static NSString* imageURL = @"http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg";
+static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z=0&ipn=d&word=%E5%9B%BE%E7%89%87&hs=0&pn=0&spn=0&di=73588436130&pi=0&rn=1&tn=baiduimagedetail&is=0%2C0&ie=utf-8&oe=utf-8&cl=2&lm=-1&cs=1794894692%2C1423685501&os=2269231183%2C2892498381&simid=3483244408%2C577623349&adpicid=0&lpn=0&ln=30&fr=ala&fm=&sme=&cg=&bdtype=0&oriquery=&objurl=http%3A%2F%2Fpic6.huitu.com%2Fres%2F20130116%2F84481_20130116142820494200_1.jpg&fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Bi7tp7_z%26e3Bv54AzdH3F1jft2gAzdH3Ffi5oAzdH3Fda8na88mAzdH3F89dbda9l9daa_z%26e3Bip4s&gsm=0";
+#pragma mark - 分享
+-(SendMessageToQQReq *)qqShare{
+    return [self qqShare:title image:imageURL url:imageURL descText:@"小小曾给的惊喜"];
+}
+/**  QQ对话  */
+-(void)qqShareSessionWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail{
+    QQApiSendResultCode send=[QQApiInterface sendReq:[self qqShare]];
+    if(send==EQQAPISENDSUCESS){
+        if(blockSuccess) blockSuccess(nil);
+    }else{
+        if(blockFail)blockFail(@(send));
+    }
+}
+/**  QQ空间  */
+-(void)qqShardTimeLineWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail{
+    QQApiSendResultCode send=[QQApiInterface SendReqToQZone:[self qqShare]];
+    if(send==EQQAPISENDSUCESS){
+        if(blockSuccess)blockSuccess(nil);
+    }
+    else{
+        if(blockFail) blockFail(@(send));
+    }
+}
+-(SendMessageToQQReq *)qqShare:(NSString *)titles image:(NSString *)images url:(NSString *)urls descText:(NSString *)descTexts{
+    TencentOAuth *auth=[[TencentOAuth alloc] initWithAppId:QQ_APPID andDelegate:nil];
+    QQApiNewsObject *h5=[QQApiNewsObject objectWithURL:urls.mj_url title:titles description:descTexts previewImageURL:images.mj_url];
+    
+    SendMessageToQQReq *req=[SendMessageToQQReq reqWithContent:h5];
+    return  req;
+}
+/**  VC可以指定的 QQ空间  */
+-(void)qqshareZoneWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail shareTitle:(NSString *)shareTitle shareImage:(NSString *)shareImage sharePage:(NSString *)sharePage descText:(NSString *)descText{
+    QQApiSendResultCode send=[QQApiInterface SendReqToQZone:[self qqShare:shareTitle image:shareImage url:sharePage descText:descText]];
+    if(send==EQQAPISENDSUCESS){
+        if(blockSuccess)blockSuccess(nil);
+    }
+    else{
+        if(blockFail) blockFail(@(send));
+    }
+}
 
 
 
 
 
+#pragma mark - wx share
+-(SendMessageToWXReq *)wxShareTitle:(NSString *)shareTitle shareImage:(NSString *)shareImage sharePage:(NSString *)sharePage descText:(NSString *)descText{
+    SendMessageToWXReq *req=[[SendMessageToWXReq alloc] init];
+    req.bText=NO;//多媒体
+    
+    WXMediaMessage* message = [WXMediaMessage message];
+    message.title = shareTitle;
+   message.description = descText;    
+    WXWebpageObject* web = [WXWebpageObject object];
+    web.webpageUrl = pageURL;
+    message.mediaObject = web;
+    req.message = message;
+    return req;
+}
+-(void)wxShareMessageWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail shareTitle:(NSString *)shareTitle shareImage:(NSString *)shareImage sharePage:(NSString *)sharePage descText:(NSString *)descText{
+    
+    SendMessageToWXReq *req=[self wxShareTitle:shareTitle shareImage:shareImage sharePage:sharePage descText:descText];
+    
+    req.scene=WXSceneSession;
+    BOOL result=[WXApi sendReq:req];
+    
+    if(result){
+        if(blockSuccess) blockSuccess(nil);
+    }else{
+        if(blockFail) blockFail(@(result));
+    }    
+}
 
-
-
-
-
+-(void)wxShareFriendWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail shareTitle:(NSString *)shareTitle shareImage:(NSString *)shareImage sharePage:(NSString *)sharePage descText:(NSString *)descText{
+    SendMessageToWXReq *req=[self wxShareTitle:shareTitle shareImage:shareImage sharePage:sharePage descText:descText];
+    
+    req.scene=WXSceneTimeline;
+    BOOL result=[WXApi sendReq:req];
+    
+    if(result){
+        if(blockSuccess) blockSuccess(nil);
+    }else{
+        if(blockFail) blockFail(@(result));
+    }
+}
 
 
 
