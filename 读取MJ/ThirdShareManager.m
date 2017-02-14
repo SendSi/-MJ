@@ -281,7 +281,7 @@ static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z
     web.thumbnailData=UIImagePNGRepresentation([UIImage imageNamed:@"123"]);
     web.webpageUrl=sharePage;
     
-    message.mediaObject=web;
+    message.mediaObject=web;//
     
     WBAuthorizeRequest *request=[WBAuthorizeRequest request];
     request.redirectURI=@"http://led.linkfun.cc";
@@ -300,13 +300,36 @@ static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z
 
 
 
+#pragma mark - 支付
+-(void)wxPayLNWY{
+    PayReq *request = [[PayReq alloc] init] ;
+    request.partnerId = @"10000100";
+    request.prepayId= @"1101000000140415649af9fc314aa427";
+    request.package = @"Sign=WXPay";
+    request.nonceStr= @"a462b76e7436e98e0ed6e13c64b4fd1c";
+    request.timeStamp= 1397527777;
+    request.sign= @"582282D72DD2B03AD892830965F428CB16E7A256";
+    [WXApi sendReq:request];
+}
 
 
+//http://led.linkfun.cc:8092/wx/unifiedorder
 
+//得到partnerId
+-(void)getInfoWX{
+    HJNetworkClient *client= [[HJNetworkClient alloc] init];
+   
+    NSDictionary *dic=@{@"price":@"1",@"body":@"body=recharge",@"order_id":@"1234567890"};
+    
+    [client.manager POST:@"http://led.linkfun.cc:8092/wx/unifiedorder" parameters:dic progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
 
+    }];
 
-
+}
 
 
 

@@ -62,11 +62,12 @@ static NSString* const WB_APPKEY = @"1098884526";
 
 
 
+#pragma mark - wx 支付
+-(void)wxPayLNWY;
 
-
-
-
-
+-(void)getInfoWX;
+@property (nonatomic, copy) idBlock blockWXPaySuccess;
+@property (nonatomic, copy) idBlock blockWXPayFail;
 
 
 @end
