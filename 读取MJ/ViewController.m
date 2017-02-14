@@ -115,6 +115,14 @@
     } shareTitle:@"小小曾测试" shareImage:@"http://news.youth.cn/gn/201702/W020170213297482155817.jpg" sharePage:@"https://www.baidu.com/" descText:@"百度一下"];
 }
 
+- (IBAction)clickSinaShare:(UIButton *)sender {
+    [ThirdShareManager.Instance sinaShareWithSuccess:^(id obj) {
+        
+    } fail:^(id obj) {
+        
+    } shareTitle:@"测试的小小曾" shareImage:@"http://news.youth.cn/gn/201702/W020170213297482155817.jpg" sharePage:@"https://www.baidu.com/" descText:@"百悦者"];
+}
+
 
 
 

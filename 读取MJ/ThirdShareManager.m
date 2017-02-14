@@ -148,9 +148,12 @@
     
 }
 -(void)didReceiveWeiboResponse:(WBBaseResponse *)response{
-    if([response isKindOfClass:[WBAuthorizeRequest class]]){
-        if(response.statusCode==WeiboSDKResponseStatusCodeSuccess){
-            WBAuthorizeResponse *auth=(WBAuthorizeResponse *)response;
+    // 请求授权响应
+    if ([response isKindOfClass:[WBAuthorizeResponse class]]) {
+        
+        if (response.statusCode == WeiboSDKResponseStatusCodeSuccess) {
+            
+            WBAuthorizeResponse* auth = (WBAuthorizeResponse*)response;
             NSString *oathStringUrl=[NSString stringWithFormat:@"https://api.weibo.com/2/users/show.json?uid=%@&access_token=%@",auth.userID,auth.accessToken];
             HJNetworkClient *client= [[HJNetworkClient alloc] init];
             [client.manager GET:oathStringUrl parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -230,7 +233,8 @@ static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z
     
     WXMediaMessage* message = [WXMediaMessage message];
     message.title = shareTitle;
-   message.description = descText;    
+   message.description = descText;
+    [message setThumbImage:[UIImage imageNamed:@"123"]];
     WXWebpageObject* web = [WXWebpageObject object];
     web.webpageUrl = pageURL;
     message.mediaObject = web;
@@ -265,7 +269,33 @@ static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z
 }
 
 
+#pragma mark - sina share
+-(void)sinaShareWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail shareTitle:(NSString *)shareTitle shareImage:(NSString *)shareImage sharePage:(NSString *)sharePage descText:(NSString *)descText{
+    WBMessageObject *message=[WBMessageObject message];
+    message.text=@"对话框写的内容";
+    
+    WBWebpageObject *web=[WBWebpageObject object];
+    web.objectID=[NSString stringWithFormat:@"%.0f",[NSDate date].timeIntervalSince1970];
+    web.title=shareTitle;
+    web.description=descText;
+    web.thumbnailData=UIImagePNGRepresentation([UIImage imageNamed:@"123"]);
+    web.webpageUrl=sharePage;
+    
+    message.mediaObject=web;
+    
+    WBAuthorizeRequest *request=[WBAuthorizeRequest request];
+    request.redirectURI=@"http://led.linkfun.cc";
+    request.scope=@"all";
+    request.shouldShowWebViewForAuthIfCannotSSO=YES;
+    WBSendMessageToWeiboRequest *req=[WBSendMessageToWeiboRequest requestWithMessage:message authInfo:request access_token:nil];
+    BOOL result=[WeiboSDK sendRequest:req];
+    if(result){
+        if(blockSuccess)blockSuccess(nil);
+    }else{
+        if(blockFail)blockFail(@(result));
+    }
 
+}
 
 
 

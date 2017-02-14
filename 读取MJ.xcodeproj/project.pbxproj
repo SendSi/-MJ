@@ -1118,13 +1118,13 @@
 				2D87A5E61E0F97B2006672B6 /* AppDelegate+Third.m */,
 				2D87A5E81E0F9B2A006672B6 /* ThirdShareManager.h */,
 				2D87A5E91E0F9B2A006672B6 /* ThirdShareManager.m */,
-				2DD7648E1E063DE600983B97 /* Main.storyboard */,
 				2DD764911E063DE600983B97 /* Assets.xcassets */,
 				2DD764931E063DE600983B97 /* LaunchScreen.storyboard */,
 				2DD764961E063DE600983B97 /* Info.plist */,
 				2DD764851E063DE500983B97 /* Supporting Files */,
 				2DD764D81E063F2B00983B97 /* RGUtilObject.h */,
 				2DD764D91E063F2B00983B97 /* RGUtilObject.m */,
+				2DD7648E1E063DE600983B97 /* Main.storyboard */,
 				2DD7648B1E063DE600983B97 /* ViewController.h */,
 				2DD7648C1E063DE600983B97 /* ViewController.m */,
 			);
@@ -1614,7 +1614,7 @@
 					"-Objc",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "sunsi.--MJ";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vwoof.LEDLampe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1643,7 +1643,7 @@
 					"-Objc",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "sunsi.--MJ";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vwoof.LEDLampe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

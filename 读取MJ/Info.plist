@@ -38,6 +38,16 @@
 				<string>wx0f8b2fa15745bcc1</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>sina</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>WB1098884526</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>

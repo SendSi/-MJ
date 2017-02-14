@@ -23,6 +23,7 @@
 
 - (IBAction)clickWxMsgShare:(UIButton *)sender;
 - (IBAction)clickWXFriendShare:(UIButton *)sender;
+- (IBAction)clickSinaShare:(UIButton *)sender;
 
 @end
 

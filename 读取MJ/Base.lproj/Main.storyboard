@@ -109,6 +109,14 @@
                                     <action selector="clickWXFriendShare:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HcM-V1-pAO"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CxN-jH-ZYw">
+                                <rect key="frame" x="175" y="406" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="sinaShare"/>
+                                <connections>
+                                    <action selector="clickSinaShare:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IMV-TT-E4v"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>

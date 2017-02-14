@@ -25,7 +25,7 @@
     }else{
         NSLogs(@"wx --失败");
     }
-    
+     [WeiboSDK enableDebugMode:YES];
     BOOL wb=[WeiboSDK registerApp:WB_APPKEY];
     if(wb){
         NSLogs(@"wb---成功");
