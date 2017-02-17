@@ -14,8 +14,21 @@
 
 static NSString* const QQ_APPID  = @"1105861684";
 // SDK APPID
-static NSString* const WX_APPID  = @"wx0f8b2fa15745bcc1";
+//static NSString* const WX_APPID  = @"wx0f8b2fa15745bcc1";//LED
+static NSString* const WX_APPID  = @"wx273df92f37ad2bed";//小吱
 static NSString* const WB_APPKEY = @"1098884526";
+
+#pragma mark - 小吱 wx
+// 开放平台登录https://open.weixin.qq.com的开发者中心获取APPID
+#define MXWechatAPPID       @"wx273df92f37ad2bed"
+// 开放平台登录https://open.weixin.qq.com的开发者中心获取AppSecret。
+#define MXWechatAPPSecret   @"370a177e935643135728415edec63cdb"
+// 微信支付商户号
+#define MXWechatMCHID       @"1402967402"
+// 安全校验码（MD5）密钥，商户平台登录账户和密码登录http://pay.weixin.qq.com
+// 平台设置的“API密钥”，为了安全，请设置为以数字和字母组成的32字符串。
+#define MXWechatPartnerKey  @"wx198806050615198806050615wxwxwx"
+
 
 @interface ThirdShareManager : NSObject<TencentSessionDelegate,WXApiDelegate,WeiboSDKDelegate>
 /** 单例  */

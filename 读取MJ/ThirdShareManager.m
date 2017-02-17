@@ -14,7 +14,7 @@
 #import "WeiboSDK.h"
 
 @interface ThirdShareManager()
-
+@property (nonatomic, strong) NSMutableDictionary *payDic;
 @end
 
 
@@ -113,6 +113,22 @@
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             self.blockWXFail(@"获取accessToken~~错误");
         }];
+    }
+    //wx支付
+    else if([resp isKindOfClass:[PayResp class]]){
+        NSString *strMsg;
+        switch (resp.errCode) {
+            case WXSuccess:
+                strMsg=@"支付结果:成功!";
+                NSLogs(@"-MJ-支付成功啦");
+                break;
+                
+            default:
+                strMsg=@"支付结果:失败!";
+                NSLogs(@"支付失败,%d,retstr==%@",resp.errCode,resp.errStr);
+                break;
+                
+        }
     }
 }
 
@@ -233,7 +249,7 @@ static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z
     
     WXMediaMessage* message = [WXMediaMessage message];
     message.title = shareTitle;
-   message.description = descText;
+    message.description = descText;
     [message setThumbImage:[UIImage imageNamed:@"123"]];
     WXWebpageObject* web = [WXWebpageObject object];
     web.webpageUrl = pageURL;
@@ -252,7 +268,7 @@ static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z
         if(blockSuccess) blockSuccess(nil);
     }else{
         if(blockFail) blockFail(@(result));
-    }    
+    }
 }
 
 -(void)wxShareFriendWithSuccess:(idBlock)blockSuccess fail:(idBlock)blockFail shareTitle:(NSString *)shareTitle shareImage:(NSString *)shareImage sharePage:(NSString *)sharePage descText:(NSString *)descText{
@@ -294,7 +310,7 @@ static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z
     }else{
         if(blockFail)blockFail(@(result));
     }
-
+    
 }
 
 
@@ -303,8 +319,8 @@ static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z
 #pragma mark - 支付
 -(void)wxPayLNWY{
     PayReq *request = [[PayReq alloc] init] ;
-    request.partnerId = @"10000100";
-    request.prepayId= @"1101000000140415649af9fc314aa427";
+    request.partnerId = MXWechatMCHID;
+    request.prepayId= MXWechatPartnerKey;
     request.package = @"Sign=WXPay";
     request.nonceStr= @"a462b76e7436e98e0ed6e13c64b4fd1c";
     request.timeStamp= 1397527777;
@@ -318,24 +334,76 @@ static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z
 //得到partnerId
 -(void)getInfoWX{
     HJNetworkClient *client= [[HJNetworkClient alloc] init];
-   
+    
     NSDictionary *dic=@{@"price":@"1",@"body":@"body=recharge",@"order_id":@"1234567890"};
     
     [client.manager POST:@"http://led.linkfun.cc:8092/wx/unifiedorder" parameters:dic progress:^(NSProgress * _Nonnull downloadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-
+        
     }];
+    
+}
 
+-(void)jumpToWXPayPanel{
+    NSDictionary *dicInfo=@{
+                            @"wxAppId":WX_APPID,
+                            @"wxMCHID":MXWechatMCHID,
+                            @"wechatPatenerKey":MXWechatPartnerKey,
+                            @"tradeType":@"APP",
+                            @"totalFee":@"1",
+                            @"tradeNO":@"22sf1s2fasfsfsf",//这个先随写
+                            @"addressIP":@"192.168.1.1",//先写死
+                            @"orderNo":[NSString stringWithFormat:@"%ld",time(0)],
+                            @"notifyUrl":@"http://wxpay.weixin.qq.com/pub_v2/pay/notify.v2.php", //交易结果通知网站此处用于测试，随意填写，正式使用时填写正确网站
+                            @"payTitle":@"资费"
+                            };
+    [self sendPayInfo:dicInfo];
+}
+-(void)sendPayInfo:(NSDictionary *)methodInfo{
+    [self.payDic setValue:methodInfo[@"wxAppId"] forKey:@"appid"];
+    [self.payDic setValue:methodInfo[@"wxMCHID"] forKey:@"mch_id"];
+    [self.payDic setValue:methodInfo[@"tradeNO"] forKey:@"nonce_str"];
+    [self.payDic setValue:methodInfo[@"payTitle"] forKey:@"body"];
+    [self.payDic setValue:methodInfo[@"orderNo"] forKey:@"out_trade_no"];
+    [self.payDic setValue:methodInfo[@"totalFee"] forKey:@"total_fee"];
+    [self.payDic setValue:methodInfo[@"addressIP"] forKey:@"spbill_create_ip"];// 终端IP
+    [self.payDic setValue:methodInfo[@"notifyUrl"] forKey:@"notify_url"];
+    [self.payDic setValue:methodInfo[@""] forKey:@"trade_type"];
+   
+//#define WXAPPID         @"appid"            // 应用id
+//#define WXMCHID         @"mch_id"           // 商户号
+//#define WXNONCESTR      @"nonce_str"        // 随机字符串
+//#define WXSIGN          @"sign"             // 签名
+//#define WXBODY          @"body"             // 商品描述
+//#define WXOUTTRADENO    @"out_trade_no"     // 商户订单号
+//#define WXTOTALFEE      @"total_fee"        // 总金额
+//#define WXEQUIPMENTIP   @"spbill_create_ip" // 终端IP
+//#define WXNOTIFYURL     @"notify_url"       // 通知地址
+//#define WXTRADETYPE     @"trade_type"       // 交易类型
+//#define WXPREPAYID      @"prepay_id"        // 预支付交易会话
+}
+
+-(NSMutableDictionary *)payDic{
+    if(_payDic==nil){
+        _payDic=[NSMutableDictionary dictionary];
+    }
+    return _payDic;
 }
 
 
-
-
-
 @end
+
+
+
+
+
+
+
+
+
 
 
 

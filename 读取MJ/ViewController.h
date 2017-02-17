@@ -25,6 +25,7 @@
 - (IBAction)clickWXFriendShare:(UIButton *)sender;
 - (IBAction)clickSinaShare:(UIButton *)sender;
 - (IBAction)ClickWXPay:(UIButton *)sender;
+- (IBAction)click_wx_pay2:(UIButton *)sender;
 
 @end
 

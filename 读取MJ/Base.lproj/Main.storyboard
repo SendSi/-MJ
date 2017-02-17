@@ -118,11 +118,19 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kW-Te-XbP">
-                                <rect key="frame" x="54" y="313" width="46" height="30"/>
+                                <rect key="frame" x="31" y="324" width="80" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="wxPAY"/>
                                 <connections>
                                     <action selector="ClickWXPay:" destination="BYZ-38-t0r" eventType="touchUpInside" id="p5y-8r-l9I"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tc3-6F-Irq">
+                                <rect key="frame" x="48" y="378" width="88" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="wxpay_2"/>
+                                <connections>
+                                    <action selector="click_wx_pay2:" destination="BYZ-38-t0r" eventType="touchUpInside" id="udr-Hp-qlr"/>
                                 </connections>
                             </button>
                         </subviews>
