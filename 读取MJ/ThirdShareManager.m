@@ -12,6 +12,8 @@
 #import "AFNetworking.h"
 #import "HJBaseAPI.h"
 #import "WeiboSDK.h"
+#import <CommonCrypto/CommonCrypto.h>
+#import "XMLDictionary.h"
 
 @interface ThirdShareManager()
 @property (nonatomic, strong) NSMutableDictionary *payDic;
@@ -346,45 +348,160 @@ static NSString* pageURL = @"http://image.baidu.com/search/detail?ct=503316480&z
     }];
     
 }
-
+/** 跳转到支付页面  */
 -(void)jumpToWXPayPanel{
     NSDictionary *dicInfo=@{
                             @"wxAppId":WX_APPID,
                             @"wxMCHID":MXWechatMCHID,
                             @"wechatPatenerKey":MXWechatPartnerKey,
-                            @"tradeType":@"APP",
-                            @"totalFee":@"1",
-                            @"tradeNO":@"22sf1s2fasfsfsf",//这个先随写
-                            @"addressIP":@"192.168.1.1",//先写死
+                            @"tradeType":@"APP",//交易类型
+                            @"totalFee":@"1",//金额
+                            @"tradeNO":@"22sf1s2fasfsfsf",//交易号,这个先随写
+                            @"addressIP":@"192.168.1.1",//网络地址,wifi下好解决....但4G下就生成不了.....先写死
                             @"orderNo":[NSString stringWithFormat:@"%ld",time(0)],
                             @"notifyUrl":@"http://wxpay.weixin.qq.com/pub_v2/pay/notify.v2.php", //交易结果通知网站此处用于测试，随意填写，正式使用时填写正确网站
                             @"payTitle":@"资费"
                             };
     [self sendPayInfo:dicInfo];
+    //转换成XML字符串,这里只是形似xml,实际并不是正确的xml的格式,需要使用ap方法戴德转义
+    NSString *string=[self.payDic XMLString];
+    AFHTTPSessionManager *session=[AFHTTPSessionManager manager];
+    session.responseSerializer=[[AFHTTPResponseSerializer alloc] init];
+    [session.requestSerializer setValue:@"text/xml;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [session.requestSerializer setValue:kUrlWechatPay forHTTPHeaderField:@"SOAPAction"];
+    [session.requestSerializer setQueryStringSerializationWithBlock:^NSString * _Nonnull(NSURLRequest * _Nonnull request, id  _Nonnull parameters, NSError * _Nullable __autoreleasing * _Nullable error) {
+        return string;
+    }];
+    [session POST:kUrlWechatPay parameters:string progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSString *responseString=[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];;
+        NSDictionary *dic=[NSDictionary dictionaryWithXMLString:responseString];
+        if([[dic objectForKey:@"result_code"]isEqualToString:@"SUCCESS"]   &&   [[dic objectForKey:@"return_code"] isEqualToString:@"SUCCESS"]){
+            //发起微信支付
+            PayReq *request=[[PayReq alloc] init];
+            request.openID=[dic objectForKey:@"appid"];
+            request.partnerId=[dic objectForKey:@"mch_id"];
+            request.prepayId=[dic objectForKey:@"prepay_id"];// 预支付交易会话id
+            request.package=@"Sign=WXPay";
+            request.nonceStr=[dic objectForKey:@"nonce_str"];//随机字符串
+            
+            NSString *timeSp=[NSString stringWithFormat:@"%ld",(long)[[NSDate date] timeIntervalSince1970]];
+            UInt32 timeStamp=[timeSp intValue];
+            request.timeStamp=timeStamp;
+            
+            NSLogs(@"requset.openId==%@",request.openID);
+            
+            request.sign=[self createMD5SingForPay:request.openID partnerid:request.partnerId
+                                          prepayid:request.prepayId
+                                           package:request.package
+                                          noncestr:request.nonceStr
+                                         timestamp:request.timeStamp];
+            [WXApi sendReq:request];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
 }
 -(void)sendPayInfo:(NSDictionary *)methodInfo{
-    [self.payDic setValue:methodInfo[@"wxAppId"] forKey:@"appid"];
-    [self.payDic setValue:methodInfo[@"wxMCHID"] forKey:@"mch_id"];
-    [self.payDic setValue:methodInfo[@"tradeNO"] forKey:@"nonce_str"];
-    [self.payDic setValue:methodInfo[@"payTitle"] forKey:@"body"];
-    [self.payDic setValue:methodInfo[@"orderNo"] forKey:@"out_trade_no"];
-    [self.payDic setValue:methodInfo[@"totalFee"] forKey:@"total_fee"];
+    [self.payDic setValue:methodInfo[@"wxAppId"] forKey:@"appid"];// 应用id
+    [self.payDic setValue:methodInfo[@"wxMCHID"] forKey:@"mch_id"];// 商户号
+    [self.payDic setValue:methodInfo[@"tradeNO"] forKey:@"nonce_str"];// 随机字符串
+    [self.payDic setValue:methodInfo[@"payTitle"] forKey:@"body"];// 商品描述
+    [self.payDic setValue:methodInfo[@"orderNo"] forKey:@"out_trade_no"];// 商户订单号
+    [self.payDic setValue:methodInfo[@"totalFee"] forKey:@"total_fee"];// 总金额
     [self.payDic setValue:methodInfo[@"addressIP"] forKey:@"spbill_create_ip"];// 终端IP
-    [self.payDic setValue:methodInfo[@"notifyUrl"] forKey:@"notify_url"];
-    [self.payDic setValue:methodInfo[@""] forKey:@"trade_type"];
+    [self.payDic setValue:methodInfo[@"notifyUrl"] forKey:@"notify_url"];//通知地
+    [self.payDic setValue:methodInfo[@"tradeType"] forKey:@"trade_type"];//交易类型
    
-//#define WXAPPID         @"appid"            // 应用id
-//#define WXMCHID         @"mch_id"           // 商户号
-//#define WXNONCESTR      @"nonce_str"        // 随机字符串
-//#define WXSIGN          @"sign"             // 签名
-//#define WXBODY          @"body"             // 商品描述
-//#define WXOUTTRADENO    @"out_trade_no"     // 商户订单号
-//#define WXTOTALFEE      @"total_fee"        // 总金额
-//#define WXEQUIPMENTIP   @"spbill_create_ip" // 终端IP
-//#define WXNOTIFYURL     @"notify_url"       // 通知地址
-//#define WXTRADETYPE     @"trade_type"       // 交易类型
-//#define WXPREPAYID      @"prepay_id"        // 预支付交易会话
+    [self createMd5Sign:self.payDic];//创建md5的sign签名
 }
+//创建md5的sign签名
+-(void)createMd5Sign:(NSMutableDictionary *)dict{
+    NSMutableString *contentString=[NSMutableString string];
+    NSArray *keys=[dict allKeys];
+    //第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串stringA。
+    //特别注意以下重要规则：
+    //◆ 参数名ASCII码从小到大排序（字典序）；
+    //◆ 如果参数的值为空不参与签名；
+    //◆ 参数名区分大小写；
+    //◆ 验证调用返回或微信主动通知签名时，传送的sign参数不参与签名，将生成的签名与该sign值作校验。
+    //◆ 微信接口可能增加字段，验证签名时必须支持增加的扩展字段
+    
+    //按字母顺序排序
+    NSArray *sortedArray=[keys sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        return [obj1 compare:obj2 options:NSBackwardsSearch];
+    }];
+    //拼接字符串
+    for(NSString *categoryId in sortedArray){
+        if(![dict[categoryId] isEqualToString:@""]  && ![dict[categoryId] isEqualToString:@"sign"]  && ![dict[categoryId] isEqualToString:@"key"]){
+            [contentString appendFormat:@"%@=%@&",categoryId,dict[categoryId]];
+        }
+    }
+    //再接partnerKey
+    [contentString appendFormat:@"key=%@",MXWechatPartnerKey];
+    
+    //得到md5签名
+    NSString *md5Sign=[self md5:contentString];
+    [self.payDic setValue:md5Sign forKey:@"sign"];
+}
+
+-(NSString *)md5:(NSString *)str{
+    const char *cStr = [str UTF8String];
+    //加密规则，因为逗比微信没有出微信支付demo，这里加密规则是参照安卓demo来得
+    unsigned char result[16]= "0123456789abcdef";
+    CC_MD5(cStr, (CC_LONG)strlen(cStr), result);
+    //这里的x是小写则产生的md5也是小写，x是大写则md5是大写，这里只能用大写，逗比微信的大小写验证很逗
+    return [NSString stringWithFormat:
+            @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+            result[0], result[1], result[2], result[3],
+            result[4], result[5], result[6], result[7],
+            result[8], result[9], result[10], result[11],
+            result[12], result[13], result[14], result[15]
+            ];
+}
+//创建发起支付时的sign签名
+-(NSString *)createMD5SingForPay:(NSString *)appid_key
+                       partnerid:(NSString *)partnerid_key
+                        prepayid:(NSString *)prepayid_key
+                         package:(NSString *)package_key
+                        noncestr:(NSString *)noncestr_key
+                       timestamp:(UInt32)timestamp_key
+{
+    NSMutableDictionary *signParams = [NSMutableDictionary dictionary];
+    [signParams setObject:appid_key forKey:@"appid"];
+    [signParams setObject:noncestr_key forKey:@"noncestr"];
+    [signParams setObject:package_key forKey:@"package"];
+    [signParams setObject:partnerid_key forKey:@"partnerid"];
+    [signParams setObject:prepayid_key forKey:@"prepayid"];
+    [signParams setObject:[NSString stringWithFormat:@"%u",(unsigned int)timestamp_key] forKey:@"timestamp"];
+    
+    NSMutableString *contentString  =[NSMutableString string];
+    NSArray *keys = [signParams allKeys];
+    //按字母顺序排序
+    NSArray *sortedArray = [keys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [obj1 compare:obj2 options:NSNumericSearch];
+    }];
+    //拼接字符串
+    for (NSString *categoryId in sortedArray) {
+        if (   ![[signParams objectForKey:categoryId] isEqualToString:@""]
+            && ![[signParams objectForKey:categoryId] isEqualToString:@"sign"]
+            && ![[signParams objectForKey:categoryId] isEqualToString:@"key"]
+            )
+        {
+            [contentString appendFormat:@"%@=%@&", categoryId, [signParams objectForKey:categoryId]];
+        }
+    }
+    
+    //添加商户密钥key字段
+    [contentString appendFormat:@"key=%@", MXWechatPartnerKey];
+    
+    NSString *result = [self md5:contentString];
+    
+    return result;
+}
+
+
 
 -(NSMutableDictionary *)payDic{
     if(_payDic==nil){

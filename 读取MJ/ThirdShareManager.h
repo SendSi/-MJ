@@ -28,7 +28,8 @@ static NSString* const WB_APPKEY = @"1098884526";
 // 安全校验码（MD5）密钥，商户平台登录账户和密码登录http://pay.weixin.qq.com
 // 平台设置的“API密钥”，为了安全，请设置为以数字和字母组成的32字符串。
 #define MXWechatPartnerKey  @"wx198806050615198806050615wxwxwx"
-
+//微信下单接口
+#define kUrlWechatPay       @"https://api.mch.weixin.qq.com/pay/unifiedorder"
 
 @interface ThirdShareManager : NSObject<TencentSessionDelegate,WXApiDelegate,WeiboSDKDelegate>
 /** 单例  */
@@ -81,7 +82,8 @@ static NSString* const WB_APPKEY = @"1098884526";
 -(void)getInfoWX;
 @property (nonatomic, copy) idBlock blockWXPaySuccess;
 @property (nonatomic, copy) idBlock blockWXPayFail;
-
+/** 跳转到支付页面  */
+-(void)jumpToWXPayPanel;
 
 @end
 

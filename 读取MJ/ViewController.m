@@ -129,6 +129,7 @@
 }
 
 - (IBAction)click_wx_pay2:(UIButton *)sender {
+    [ThirdShareManager.Instance jumpToWXPayPanel];
 }
 
 
